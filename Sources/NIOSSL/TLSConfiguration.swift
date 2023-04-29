@@ -267,6 +267,9 @@ public struct TLSConfiguration {
     /// Whether to verify remote certificates.
     public var certificateVerification: CertificateVerification
 
+    /// Enable RFC8701
+    public var grease: Bool = false
+
     /// The trust roots to use to validate certificates. This only needs to be provided if you intend to validate
     /// certificates.
     ///
@@ -330,6 +333,7 @@ public struct TLSConfiguration {
                  signingSignatureAlgorithms: [SignatureAlgorithm]?,
                  minimumTLSVersion: TLSVersion,
                  maximumTLSVersion: TLSVersion?,
+                 grease: Bool = false,
                  certificateVerification: CertificateVerification,
                  trustRoots: NIOSSLTrustRoots,
                  certificateChain: [NIOSSLCertificateSource],
@@ -362,6 +366,7 @@ public struct TLSConfiguration {
         self.pskClientCallback = pskClientCallback
         self.pskServerCallback = pskServerCallback
         self.pskHint = pskHint
+        self.grease = grease
         if !cipherSuiteValues.isEmpty {
             self.cipherSuiteValues = cipherSuiteValues
         }

@@ -269,7 +269,11 @@ public final class NIOSSLContext {
         // Cipher suites. We just pass this straight to BoringSSL.
         returnCode = CNIOBoringSSL_SSL_CTX_set_cipher_list(context, configuration.cipherSuites)
         precondition(1 == returnCode)
-        
+
+        if configuration.grease {
+            CNIOBoringSSL_SSL_CTX_set_grease_enabled(context, 1)
+        }
+
         // Set the PSK Client Configuration callback.
         if let pskClientConfigurationsCallback = configuration.pskClientCallback {
             self.pskClientConfigurationCallback = pskClientConfigurationsCallback
