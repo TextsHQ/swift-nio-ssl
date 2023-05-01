@@ -270,6 +270,8 @@ public struct TLSConfiguration {
     /// Enable RFC8701
     public var grease: Bool = false
 
+    public var signedCertificateTimestamps: Bool = false
+
     /// The trust roots to use to validate certificates. This only needs to be provided if you intend to validate
     /// certificates.
     ///
@@ -334,6 +336,7 @@ public struct TLSConfiguration {
                  minimumTLSVersion: TLSVersion,
                  maximumTLSVersion: TLSVersion?,
                  grease: Bool = false,
+                 signedCertificateTimestamps: Bool = false,
                  certificateVerification: CertificateVerification,
                  trustRoots: NIOSSLTrustRoots,
                  certificateChain: [NIOSSLCertificateSource],
@@ -367,6 +370,7 @@ public struct TLSConfiguration {
         self.pskServerCallback = pskServerCallback
         self.pskHint = pskHint
         self.grease = grease
+        self.signedCertificateTimestamps = signedCertificateTimestamps
         if !cipherSuiteValues.isEmpty {
             self.cipherSuiteValues = cipherSuiteValues
         }

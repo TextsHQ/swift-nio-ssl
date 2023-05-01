@@ -272,6 +272,9 @@ public final class NIOSSLContext {
 
         CNIOBoringSSL_SSL_CTX_set_grease_enabled(context, configuration.grease ? 1 : 0)
 
+        if configuration.signedCertificateTimestamps {
+            CNIOBoringSSL_SSL_CTX_enable_signed_cert_timestamps(context)
+        }
 
         // Set the PSK Client Configuration callback.
         if let pskClientConfigurationsCallback = configuration.pskClientCallback {
