@@ -276,6 +276,10 @@ public final class NIOSSLContext {
             CNIOBoringSSL_SSL_CTX_enable_signed_cert_timestamps(context)
         }
 
+        if configuration.ocspStapling {
+            CNIOBoringSSL_SSL_CTX_enable_signed_cert_timestamps(context)
+        }
+
         // Set the PSK Client Configuration callback.
         if let pskClientConfigurationsCallback = configuration.pskClientCallback {
             self.pskClientConfigurationCallback = pskClientConfigurationsCallback

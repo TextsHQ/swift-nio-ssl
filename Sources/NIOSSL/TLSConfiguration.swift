@@ -272,6 +272,8 @@ public struct TLSConfiguration {
 
     public var signedCertificateTimestamps: Bool = false
 
+    public var ocspStapling: Bool = false
+
     /// The trust roots to use to validate certificates. This only needs to be provided if you intend to validate
     /// certificates.
     ///
@@ -337,6 +339,7 @@ public struct TLSConfiguration {
                  maximumTLSVersion: TLSVersion?,
                  grease: Bool = false,
                  signedCertificateTimestamps: Bool = false,
+                 ocspStapling: Bool = false,
                  certificateVerification: CertificateVerification,
                  trustRoots: NIOSSLTrustRoots,
                  certificateChain: [NIOSSLCertificateSource],
@@ -371,6 +374,7 @@ public struct TLSConfiguration {
         self.pskHint = pskHint
         self.grease = grease
         self.signedCertificateTimestamps = signedCertificateTimestamps
+        self.ocspStapling = ocspStapling
         if !cipherSuiteValues.isEmpty {
             self.cipherSuiteValues = cipherSuiteValues
         }
