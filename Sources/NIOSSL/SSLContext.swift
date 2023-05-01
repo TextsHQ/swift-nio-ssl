@@ -277,7 +277,7 @@ public final class NIOSSLContext {
         }
 
         if configuration.ocspStapling {
-            CNIOBoringSSL_SSL_CTX_enable_signed_cert_timestamps(context)
+            CNIOBoringSSL_SSL_CTX_enable_ocsp_stapling(context)
         }
 
         // Set the PSK Client Configuration callback.
