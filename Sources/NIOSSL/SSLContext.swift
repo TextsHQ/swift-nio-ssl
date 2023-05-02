@@ -281,7 +281,7 @@ public final class NIOSSLContext {
             CNIOBoringSSL_SSL_CTX_enable_ocsp_stapling(context)
         }
 
-        if configuration.certificateCompressionHack {
+        if configuration.brotliCertificateCompression {
             CNIOBoringSSL_SSL_CTX_add_cert_compression_alg(
                 context,
                 UInt16(TLSEXT_cert_compression_brotli),
