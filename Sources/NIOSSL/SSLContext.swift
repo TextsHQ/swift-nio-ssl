@@ -24,6 +24,8 @@ import Glibc
 #error("unsupported os")
 #endif
 
+import Compression
+
 // This is a neat trick. Swift lazily initializes module-globals based on when they're first
 // used. This lets us defer BoringSSL intialization as late as possible and only do it if people
 // actually create any object that uses BoringSSL.
@@ -278,6 +280,16 @@ public final class NIOSSLContext {
 
         if configuration.ocspStapling {
             CNIOBoringSSL_SSL_CTX_enable_ocsp_stapling(context)
+        }
+
+        if configuration.certificateCompressionHack {
+            CNIOBoringSSL_SSL_CTX_add_cert_compression_alg(
+                context,
+                UInt16(TLSEXT_cert_compression_brotli),
+                nil // compression. we don't need this
+            ) { _, _, _, _, _ in
+                return 0
+            }
         }
 
         // Set the PSK Client Configuration callback.
