@@ -64,9 +64,11 @@ MANGLE_END */
             dependencies: [
                 "CNIOBoringSSL"
             ]),
+        .target(name: "CBrotli"),
         .target(
             name: "NIOSSL",
             dependencies: [
+                "CBrotli",
                 "CNIOBoringSSL",
                 "CNIOBoringSSLShims",
                 .product(name: "NIO", package: "swift-nio"),
