@@ -13,6 +13,7 @@
 //===----------------------------------------------------------------------===//
 
 import NIOCore
+@_implementationOnly import CBrotli
 @_implementationOnly import CNIOBoringSSL
 @_implementationOnly import CNIOBoringSSLShims
 
@@ -23,8 +24,6 @@ import Glibc
 #else
 #error("unsupported os")
 #endif
-
-import Compression
 
 // This is a neat trick. Swift lazily initializes module-globals based on when they're first
 // used. This lets us defer BoringSSL intialization as late as possible and only do it if people
@@ -287,8 +286,27 @@ public final class NIOSSLContext {
                 context,
                 UInt16(TLSEXT_cert_compression_brotli),
                 nil // compression. we don't need this
-            ) { _, _, _, _, _ in
-                return 0
+            ) { (_: OpaquePointer?, output: UnsafeMutablePointer<OpaquePointer?>?, uncompressedLength: Int, input: UnsafePointer<UInt8>?, inputLength: Int) in
+                // decompress closure
+                guard let input else {
+                    return 0
+                }
+
+                var data: UnsafeMutablePointer<UInt8>? = nil
+                guard let decompressed = CNIOBoringSSL_CRYPTO_BUFFER_alloc(&data, uncompressedLength) else {
+                    return 0
+                }
+
+                var outputSize = uncompressedLength
+                let result = BrotliDecoderDecompress(inputLength, input, &outputSize, data)
+                guard result == BROTLI_DECODER_RESULT_SUCCESS || outputSize != uncompressedLength else {
+                    return 0
+                }
+
+                // let inputData = Data(bytes: input, count: inputLength)
+                // let result = Brotli().decompress(inputData, maximumDecompressedSize: uncompressedLength)
+                output?.pointee = decompressed
+                return 1
             }
         }
 
