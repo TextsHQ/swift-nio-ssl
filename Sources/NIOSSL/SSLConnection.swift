@@ -69,8 +69,13 @@ internal final class SSLConnection {
         // We pass the SSL object an unowned reference to this object.
         let pointerToSelf = Unmanaged.passUnretained(self).toOpaque()
         CNIOBoringSSL_SSL_set_ex_data(self.ssl, sslConnectionExDataIndex, pointerToSelf)
+
+        // custom settings to match chromium
         CNIOBoringSSL_SSL_add_application_settings(self.ssl, "h2", 2, nil, 0)
         self.setRenegotiationSupport(self.parentContext.configuration.renegotiationSupport)
+        CNIOBoringSSL_SSL_set_shed_handshake_config(self.ssl, 1)
+        // CNIOBoringSSL_SSL_set_enable_ech_grease(self.ssl, 1)
+        // CNIOBoringSSL_SSL_set_permute_extensions(self.ssl, 1);
     }
 
     deinit {
