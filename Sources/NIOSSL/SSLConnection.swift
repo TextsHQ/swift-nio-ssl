@@ -185,6 +185,8 @@ internal final class SSLConnection {
             baseState = ssl_renegotiate_once
         case .always:
             baseState = ssl_renegotiate_freely
+        case .explicit:
+            baseState = ssl_renegotiate_explicit
         }
 
         CNIOBoringSSL_SSL_set_renegotiate_mode(self.ssl, baseState)

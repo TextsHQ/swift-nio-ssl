@@ -158,6 +158,8 @@ public enum NIORenegotiationSupport: Sendable {
 
     /// Allow repeated renegotiation. To be avoided.
     case always
+
+    case explicit
 }
 
 /// Signature algorithms. The values are defined as in TLS 1.3
