@@ -19,6 +19,8 @@ import NIOCore
 
 #if canImport(Darwin)
 import Darwin.C
+#elseif canImport(Musl)
+import Musl
 #elseif os(Linux) || os(FreeBSD) || os(Android)
 import Glibc
 #else
@@ -893,7 +895,7 @@ internal class DirectoryContents: Sequence, IteratorProtocol {
     
     init(path: String) {
         self.path = path
-        self.dir = opendir(path)
+        self.dir = opendir(path)!
     }
     
     func next() -> String? {
